@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-ITERATIONS = 2
+ITERATIONS = 100
 
 
 def setup_webdriver():
@@ -10,7 +10,7 @@ def setup_webdriver():
 
     options = webdriver.FirefoxOptions()
     options.profile = profile
-    # options.add_argument("--headless")
+    options.add_argument("--headless")
 
     return webdriver.Firefox(options=options, service=webdriver.FirefoxService())
 
