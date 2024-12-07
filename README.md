@@ -10,4 +10,5 @@ More details about the campaign can be found in its [terms and conditions](https
 Run the `main.py` script either via IDE (e.g. [PyCharm](https://www.jetbrains.com/pycharm/)) or via terminal from the 
 project's root directory (`python main.py`).
 
-Default number of iterations within the script is 100 (see corresponding variable at the top of the script).
+Default number of iterations within the script is set to 15 (see corresponding `ITERATIONS` variable at the top of the script).
+For more verbose logging while script is running, set `DEBUG_MODE` variable to `True`.
