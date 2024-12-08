@@ -1,12 +1,13 @@
 import datetime
 import time
-
 from itertools import count
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 
-ITERATIONS = 15
+import input_parser
+
 DEBUG_MODE = False
 COUNT_ITERATOR = count()
 
@@ -55,12 +56,16 @@ def feed_a_dog():
 if __name__ == "__main__":
     print("Feeding script starts...")
 
+    iterations, DEBUG_MODE = input_parser.get_input_arguments()
+
     start = time.time()
-    for i in range(1, ITERATIONS + 1):
+    for i in range(1, iterations + 1):
         print("Iteration number: {}".format(i))
         feed_a_dog()
     end = time.time()
+    elapsed_time = datetime.timedelta(seconds=end - start)
 
-    print("Feeding script finished after {}!".format(datetime.timedelta(seconds=end - start)))
-    print("Iterations: {}".format(ITERATIONS))
+    print("Feeding script finished!")
+    print("Elapsed time: {} (~{} seconds)".format(elapsed_time, elapsed_time.seconds))
+    print("Iterations: {}".format(iterations))
     print("Successful clicks: {}".format(next(COUNT_ITERATOR)))
