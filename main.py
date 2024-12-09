@@ -6,9 +6,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 
-import input_parser
+from input_options import InputOptions
 
-DEBUG_MODE = False
 COUNT_ITERATOR = count()
 
 
@@ -20,7 +19,8 @@ def setup_webdriver() -> WebDriver:
     options = webdriver.FirefoxOptions()
     options.profile = profile
     # Headless mode allows to run the program in the background (without the WebDriver's browser window being sequentially opened and closed)
-    options.add_argument("--headless")
+    if input_options.headless:
+        options.add_argument("--headless")
 
     return webdriver.Firefox(options=options, service=webdriver.FirefoxService())
 
@@ -29,13 +29,11 @@ def find_and_click_feeding_button(driver: WebDriver):
     button = driver.find_element(by=By.CLASS_NAME, value="single-pet-control-feed_button")
     if button is None:
         raise Exception("Feeding button not found!")
-    if DEBUG_MODE:
-        print("Feeding button found!")
+    verbose_log("Feeding button found!")
 
     button.click()
     if driver.find_element(by=By.CLASS_NAME, value="single-pet-control-thank_you_message") is not None:
-        if DEBUG_MODE:
-            print("Click succeeded (\"thank_you_message\" found)!")
+        verbose_log("Click succeeded (\"thank_you_message\" found)!")
         next(COUNT_ITERATOR)
 
 
@@ -53,13 +51,18 @@ def feed_a_dog():
     driver.quit()
 
 
+def verbose_log(message: str):
+    if input_options.verbose:
+        print(message)
+
+
 if __name__ == "__main__":
     print("Feeding script starts...")
 
-    iterations, DEBUG_MODE = input_parser.get_input_arguments()
+    input_options = InputOptions()
 
     start = time.time()
-    for i in range(1, iterations + 1):
+    for i in range(1, input_options.iterations + 1):
         print("Iteration number: {}".format(i))
         feed_a_dog()
     end = time.time()
@@ -67,5 +70,5 @@ if __name__ == "__main__":
 
     print("Feeding script finished!")
     print("Elapsed time: {} (~{} seconds)".format(elapsed_time, elapsed_time.seconds))
-    print("Iterations: {}".format(iterations))
+    print("Iterations: {}".format(input_options.iterations))
     print("Successful clicks: {}".format(next(COUNT_ITERATOR)))

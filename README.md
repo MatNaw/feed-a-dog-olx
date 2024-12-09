@@ -14,4 +14,4 @@ More details about the campaign can be found in its [terms and conditions](https
 Run the `main.py` script either via IDE (e.g. [PyCharm](https://www.jetbrains.com/pycharm/)) or via terminal from the
 project's root directory (`python main.py`).
 
-For possible command-line options, run `python main.py --help` or check the helper script `input_parser.py`.
+For possible command-line options, run `python main.py --help` or check the helper script `input_options.py`.

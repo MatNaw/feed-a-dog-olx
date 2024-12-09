@@ -1,6 +1,8 @@
 import argparse
 
 DEFAULT_ITERATIONS = 15
+DEFAULT_VERBOSE = False
+DEFAULT_HEADLESS = True
 
 
 def check_positive(value):
@@ -15,12 +17,23 @@ def check_positive(value):
     return int_value
 
 
-def get_input_arguments():
+def get_input_options():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-i", "--iterations", help="set number of script iterations",
                         nargs="?", const=DEFAULT_ITERATIONS, default=DEFAULT_ITERATIONS, type=check_positive)
     parser.add_argument("-v", "--verbose", help="enable or disable more verbose logging",
-                        action=argparse.BooleanOptionalAction)
+                        action=argparse.BooleanOptionalAction, default=DEFAULT_VERBOSE)
+    parser.add_argument("-hl", "--headless", help="enable or disable browser's headless mode",
+                        action=argparse.BooleanOptionalAction, default=DEFAULT_HEADLESS)
 
     args = parser.parse_args()
-    return args.iterations, args.verbose
+    return args.iterations, args.verbose, args.headless
+
+
+class InputOptions:
+    iterations = DEFAULT_ITERATIONS
+    verbose = DEFAULT_VERBOSE
+    headless = DEFAULT_HEADLESS
+
+    def __init__(self):
+        self.iterations, self.verbose, self.headless = get_input_options()
