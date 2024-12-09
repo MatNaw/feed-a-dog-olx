@@ -61,14 +61,16 @@ if __name__ == "__main__":
     print("Feeding script starts...\n")
 
     input_options = InputOptions()
-    pool = multiprocessing.Pool(processes=input_options.threads)
 
     start = time.time()
-    result = pool.map(functools.partial(feed_a_dog, input_options), range(1, input_options.iterations + 1))
+    with multiprocessing.Pool(processes=input_options.threads) as pool:
+        result = pool.map_async(functools.partial(feed_a_dog, input_options), range(1, input_options.iterations + 1))
+        while not result.ready():
+            time.sleep(1)
     end = time.time()
     elapsed_time = datetime.timedelta(seconds=end - start)
 
     print("\nFeeding script finished!")
     print("Elapsed time: {} (~{} seconds)".format(elapsed_time, elapsed_time.seconds))
     print("Iterations: {}".format(input_options.iterations))
-    print("Successful clicks: {}".format(result.count(True)))
+    print("Successful clicks: {}".format(result.get().count(True)))
