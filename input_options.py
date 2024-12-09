@@ -3,6 +3,7 @@ import argparse
 DEFAULT_ITERATIONS = 15
 DEFAULT_VERBOSE = False
 DEFAULT_HEADLESS = True
+DEFAULT_THREADS = 3
 
 
 def check_positive(value):
@@ -25,15 +26,18 @@ def get_input_options():
                         action=argparse.BooleanOptionalAction, default=DEFAULT_VERBOSE)
     parser.add_argument("-hl", "--headless", help="enable or disable browser's headless mode",
                         action=argparse.BooleanOptionalAction, default=DEFAULT_HEADLESS)
+    parser.add_argument("-t", "--threads", help="set number of parallel script threads",
+                        nargs="?", const=DEFAULT_THREADS, default=DEFAULT_THREADS, type=check_positive)
 
     args = parser.parse_args()
-    return args.iterations, args.verbose, args.headless
+    return args.iterations, args.verbose, args.headless, args.threads
 
 
 class InputOptions:
     iterations = DEFAULT_ITERATIONS
     verbose = DEFAULT_VERBOSE
     headless = DEFAULT_HEADLESS
+    threads = DEFAULT_THREADS
 
     def __init__(self):
-        self.iterations, self.verbose, self.headless = get_input_options()
+        self.iterations, self.verbose, self.headless, self.threads = get_input_options()
